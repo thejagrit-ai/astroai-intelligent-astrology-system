@@ -1,0 +1,61 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile information and astrology metadata",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "dob": { "type": "string", "format": "date-time" },
+        "birthTime": { "type": "string" },
+        "birthPlace": { "type": "string" },
+        "zodiacSign": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "name", "email", "dob"]
+    },
+    "ChatHistory": {
+      "title": "ChatHistory",
+      "description": "History of AI astrology consultations",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "messages": {
+          "type": "array",
+          "items": { "type": "object" }
+        },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "Kundli": {
+      "title": "Kundli",
+      "description": "Saved birth charts",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "name": { "type": "string" },
+        "dob": { "type": "string" },
+        "birthTime": { "type": "string" },
+        "birthPlace": { "type": "string" },
+        "coordinates": { "type": "object" },
+        "chartData": { "type": "object" }
+      }
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User account documents"
+    },
+    "/users/{userId}/chats/{chatId}": {
+      "schema": "ChatHistory",
+      "description": "User chat sessions"
+    },
+    "/users/{userId}/kundlis/{kundliId}": {
+      "schema": "Kundli",
+      "description": "Saved kundli records"
+    }
+  }
+}

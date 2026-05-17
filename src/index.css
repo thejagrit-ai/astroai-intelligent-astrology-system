@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@theme {
+  --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", ui-serif, Georgia, serif;
+}
+
+@layer base {
+  body {
+    @apply bg-[#050508] text-slate-200 font-sans selection:bg-indigo-500/30 selection:text-indigo-200;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(99, 102, 241, 0.35) rgba(15, 23, 42, 0.4);
+  }
+
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: rgba(15, 23, 42, 0.35);
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(99, 102, 241, 0.45), rgba(168, 85, 247, 0.45));
+    border-radius: 999px;
+    border: 2px solid rgba(15, 23, 42, 0.35);
+  }
+
+  .italic.serif {
+    font-family: var(--font-serif);
+    font-style: italic;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-white font-semibold;
+  }
+}
+
+@layer components {
+  .theme-card {
+    @apply bg-slate-900/40 border-slate-800 rounded-2xl p-6 transition-all;
+  }
+
+  .theme-sidebar {
+    @apply bg-[#0a0a14] border-r border-slate-800;
+  }
+
+  .theme-header {
+    @apply bg-[#050508]/80 backdrop-blur-md border-b border-slate-800;
+  }
+
+  .theme-gradient-accent {
+    @apply bg-gradient-to-tr from-indigo-600 to-purple-500;
+  }
+
+  .theme-nav-item {
+    @apply flex items-center gap-3 px-4 py-3 rounded-lg transition-colors text-slate-400 hover:text-white hover:bg-slate-800/50 cursor-pointer;
+  }
+
+  .active-nav-item {
+    @apply bg-indigo-500/10 border-r-2 border-indigo-500 text-white rounded-none;
+  }
+
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(99, 102, 241, 0.45) rgba(15, 23, 42, 0.35);
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(15, 23, 42, 0.35);
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(99, 102, 241, 0.5), rgba(168, 85, 247, 0.5));
+    border-radius: 999px;
+    border: 2px solid rgba(15, 23, 42, 0.35);
+  }
+}
+
+.markdown-body {
+  @apply text-sm leading-relaxed;
+}
+
+.markdown-body p {
+  @apply mb-4;
+}
+
+.markdown-body h2 {
+  @apply text-lg font-bold mb-2 text-indigo-400;
+}

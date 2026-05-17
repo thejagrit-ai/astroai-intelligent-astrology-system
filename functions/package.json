@@ -1,0 +1,13 @@
+{
+  "name": "astroai-functions",
+  "private": true,
+  "main": "index.js",
+  "engines": {
+    "node": "18"
+  },
+  "dependencies": {
+    "@google/genai": "^1.29.0",
+    "express": "^4.21.2",
+    "firebase-functions": "^5.1.1"
+  }
+}

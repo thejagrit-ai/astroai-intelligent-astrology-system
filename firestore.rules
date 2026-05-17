@@ -1,0 +1,78 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Auth helpers
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // User profiles
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow create: if isSignedIn() && request.auth.uid == userId 
+        && request.resource.data.keys().hasAll(['uid', 'name', 'email', 'dob'])
+        && request.resource.data.uid == userId;
+      allow update: if isOwner(userId) 
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name', 'dob', 'birthTime', 'birthPlace', 'gender', 'zodiacSign', 'kundli', 'predictions', 'nakshatra', 'mahadasha', 'timezone', 'birthTimeAccuracy', 'locationConfidence', 'answerTone', 'userGoals', 'remindersEnabled', 'reminderTime', 'updatedAt']);
+      
+      // Messages / Chats subcollection
+      match /messages/{messageId} {
+        allow list: if isOwner(userId);
+        allow create: if isOwner(userId)
+          && request.resource.data.keys().hasAll(['text', 'role', 'createdAt'])
+          && request.resource.data.role in ['user', 'model'];
+      }
+      
+      // Kundlis subcollection
+      match /kundlis/{kundliId} {
+        allow list, get: if isOwner(userId);
+        allow create: if isOwner(userId);
+        allow update: if isOwner(userId);
+        allow delete: if isOwner(userId);
+      }
+
+      // Saved reading timeline
+      match /readings/{readingId} {
+        allow list, get: if isOwner(userId);
+        allow create: if isOwner(userId);
+        allow update: if isOwner(userId);
+        allow delete: if isOwner(userId);
+      }
+
+      // Structured generated reports cache
+      match /reports/{reportId} {
+        allow list, get: if isOwner(userId);
+        allow create: if isOwner(userId);
+        allow update: if isOwner(userId);
+        allow delete: if isOwner(userId);
+      }
+
+      // Analytics funnel events
+      match /analytics/{eventId} {
+        allow list, get: if isOwner(userId);
+        allow create: if isOwner(userId);
+        allow delete: if isOwner(userId);
+      }
+
+      // Client error observability logs
+      match /errors/{errorId} {
+        allow list, get: if isOwner(userId);
+        allow create: if isOwner(userId);
+        allow delete: if isOwner(userId);
+      }
+    }
+  }
+}
